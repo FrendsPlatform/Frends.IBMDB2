@@ -23,7 +23,7 @@ You can install the Task via frends UI Task View.
 
 Create a simple DB2 server to docker
 
-`docker run -h db2server --name db2server --restart=always --detach --privileged=true -p  50000:50000 --env-file ./lib/env_list.txt -v $PWD:/database icr.io/db2_community/db2`
+`docker run -h db2server --name db2server --restart=always --detach --privileged=true -p  50000:50000 --env-file ./Frends.IBMDB2.ExecuteQuery.Tests/lib/env_list.txt -v $PWD:/database icr.io/db2_community/db2`
 
 Run the tests
 
