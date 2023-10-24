@@ -32,8 +32,8 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
-	<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
-	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
+    <PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" Condition="'$(OS)' == 'Unix'" />
+    <PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" Condition="'$(OS)' == 'Windows_NT'" />
   </ItemGroup>
   
   <ItemGroup>
