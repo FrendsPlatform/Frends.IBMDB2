@@ -21,9 +21,20 @@
 		<PrivateAssets>all</PrivateAssets>
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 	</PackageReference>
-	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
-	<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
   </ItemGroup>
+	<Choose>
+		<When Condition="'$(OS)' == 'WINDOWS_NT'">
+			<ItemGroup>
+				<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
+			</ItemGroup>
+
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
 
   <ItemGroup>
     <ProjectReference Include="..\Frends.IBMDB2.ExecuteQuery\Frends.IBMDB2.ExecuteQuery.csproj" />
