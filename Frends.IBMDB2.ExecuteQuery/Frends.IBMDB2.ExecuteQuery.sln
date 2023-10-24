@@ -19,17 +19,37 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|ARM32 = Debug|ARM32
+		Debug|ARM64 = Debug|ARM64
 		Release|Any CPU = Release|Any CPU
+		Release|ARM32 = Release|ARM32
+		Release|ARM64 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|ARM32.ActiveCfg = Debug|ARM32
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|ARM32.Build.0 = Debug|ARM32
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Debug|ARM64.Build.0 = Debug|ARM64
 		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|ARM32.ActiveCfg = Release|ARM32
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|ARM32.Build.0 = Release|ARM32
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|ARM64.ActiveCfg = Release|ARM64
+		{35C305C0-8108-4A98-BB1D-AFE5C926239E}.Release|ARM64.Build.0 = Release|ARM64
 		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|ARM32.ActiveCfg = Debug|ARM32
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|ARM32.Build.0 = Debug|ARM32
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Debug|ARM64.Build.0 = Debug|ARM64
 		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|ARM32.ActiveCfg = Release|ARM32
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|ARM32.Build.0 = Release|ARM32
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|ARM64.ActiveCfg = Release|ARM64
+		{8CA92187-8E4F-4414-803B-EC899479022E}.Release|ARM64.Build.0 = Release|ARM64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
