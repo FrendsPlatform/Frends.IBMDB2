@@ -3,7 +3,7 @@
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
 	  <LangVersion>Latest</LangVersion>
-	  <Version>0.0.1</Version>
+	  <Version>0.0.2</Version>
 	  <Authors>Frends</Authors>
 	  <Copyright>Frends</Copyright>
 	  <Company>Frends</Company>
@@ -14,7 +14,6 @@
 	  <Description>Frends Task for executing queries in IBMDB2 database</Description>
 	  <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/FrendsPlatform/Frends.IBMDB2/tree/main/Frends.IBMDB2.ExecuteQuery</RepositoryUrl>
-	  <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
