@@ -37,10 +37,8 @@
   <ItemGroup Condition="'$(OS)' == 'WINDOWS_NT'">
 	<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
   </ItemGroup>
-
   <ItemGroup Condition="'$(OS)' == 'Unix'">
 	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
-	<PackageReference Include="IBM.EntityFrameworkCore-lnx" Version="3.1.0.500" />
   </ItemGroup>
 	
 	<ItemGroup>
