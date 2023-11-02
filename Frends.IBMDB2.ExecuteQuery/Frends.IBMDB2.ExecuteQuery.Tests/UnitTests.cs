@@ -6,6 +6,8 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Frends.IBMDB2.ExecuteQuery.Definitions;
@@ -24,6 +26,8 @@ internal class UnitTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            RunCommandWithBash(@"export LD_LIBRARY_PATH=""$HOME/.nuget/packages/net.ibm.data.db2-lnx/7.0.0.200/buildTransitive/clidriver/lib""");
         TestConnectionBeforeRunningTests(_connString);
     }
 
@@ -209,5 +213,23 @@ internal class UnitTests
         if (con.State != ConnectionState.Open)
             throw new Exception("Check that the docker container is up and running.");
         con.Close();
+    }
+
+    private string RunCommandWithBash(string command)
+    {
+        var psi = new ProcessStartInfo();
+        psi.FileName = "/bin/bash";
+        psi.Arguments = command;
+        psi.RedirectStandardOutput = true;
+        psi.UseShellExecute = false;
+        psi.CreateNoWindow = true;
+
+        using var process = Process.Start(psi);
+
+        process.WaitForExit();
+
+        var output = process.StandardOutput.ReadToEnd();
+
+        return output;
     }
 }
