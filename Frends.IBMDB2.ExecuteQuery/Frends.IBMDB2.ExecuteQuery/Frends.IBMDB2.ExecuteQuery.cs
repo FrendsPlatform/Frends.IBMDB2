@@ -21,7 +21,7 @@ public static class IBMDB2
     /// <param name="input">Input parameters.</param>
     /// <param name="options">Options parameters.</param>
     /// <param name="cancellationToken">Cancellation token given by Frends.</param>
-    /// <returns>Object { bool Success, int RecordsAffected, string ErrorMessage, dynamic data }.</returns>
+    /// <returns>Object { bool Success, int RecordsAffected, string ErrorMessage, dynamic data }</returns>
     public static async Task<Result> ExecuteQuery([PropertyTab] Input input, [PropertyTab] Options options, CancellationToken cancellationToken)
     {
         Result result;
