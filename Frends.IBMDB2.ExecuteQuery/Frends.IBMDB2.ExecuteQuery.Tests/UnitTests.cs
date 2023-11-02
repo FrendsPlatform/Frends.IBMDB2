@@ -27,7 +27,13 @@ internal class UnitTests
     public void OneTimeSetUp()
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            RunCommandWithBash(@"export LD_LIBRARY_PATH=""$HOME/.nuget/packages/net.ibm.data.db2-lnx/7.0.0.200/buildTransitive/clidriver/lib""");
+        {
+            var test1 = RunCommandWithBash("find $HOME -name libdb2.so");
+            Console.WriteLine(test1);
+            var test = RunCommandWithBash(@"export LD_LIBRARY_PATH=""$HOME/.nuget/packages/net.ibm.data.db2-lnx/7.0.0.200/buildTransitive/clidriver/lib""");
+            Console.WriteLine(test);
+        }
+
         TestConnectionBeforeRunningTests(_connString);
     }
 
