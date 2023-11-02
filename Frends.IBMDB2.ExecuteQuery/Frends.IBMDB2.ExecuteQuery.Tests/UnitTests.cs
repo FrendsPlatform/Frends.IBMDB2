@@ -24,7 +24,6 @@ internal class UnitTests
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        DebugIssueWithLoadingDLL();
         TestConnectionBeforeRunningTests(_connString);
     }
 
@@ -210,10 +209,5 @@ internal class UnitTests
         if (con.State != ConnectionState.Open)
             throw new Exception("Check that the docker container is up and running.");
         con.Close();
-    }
-
-    private static void DebugIssueWithLoadingDLL()
-    {
-
     }
 }
