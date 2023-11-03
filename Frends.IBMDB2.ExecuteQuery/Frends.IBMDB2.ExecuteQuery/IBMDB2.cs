@@ -6,7 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Frends.IBMDB2.ExecuteQuery.Definitions;
-    using IBM.Data.DB2.Core;
+    using IBM.Data.Db2;
     using Newtonsoft.Json.Linq;
 
     /// <summary>
@@ -149,5 +149,4 @@
             };
         }
     }
-
 }
