@@ -34,15 +34,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
 	<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
-  </ItemGroup>
-
-	<ItemGroup Condition="'$(OS)' == 'WINDOWS_NT'">
-		<PackageReference Include="Net.IBM.Data.Db2" Version="6.0.0.400" />
-	</ItemGroup>
-	
-	<ItemGroup Condition="'$(OS)' == 'Unix'">
 	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="6.0.0.400" />
   </ItemGroup>
+
+	
 	
 	<ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

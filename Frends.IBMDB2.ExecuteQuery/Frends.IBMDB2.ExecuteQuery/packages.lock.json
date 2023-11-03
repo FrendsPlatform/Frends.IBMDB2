@@ -8,11 +8,14 @@
         "resolved": "4.7.0",
         "contentHash": "pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA=="
       },
-      "Net.IBM.Data.Db2": {
+      "Net.IBM.Data.Db2-lnx": {
         "type": "Direct",
         "requested": "[6.0.0.400, )",
         "resolved": "6.0.0.400",
-        "contentHash": "FktzwZO7qaiq98BGJQc/rCgYOyyoqv1b3G2QyVt8YFSkCmfMDJDRQLZTXUV2kqPAkBPK1I38trYOGL5NZO9m9g=="
+        "contentHash": "j7TvuMZJ3uGikEhC72QgZxAQ+WXoPC2YXlDqGwa7WpB6vYwSWcZr1dhZaZFWXZbrt2Adbl26q7TIaNg3DUMoAQ==",
+        "dependencies": {
+          "System.Runtime.Loader": "4.3.0"
+        }
       },
       "Newtonsoft.Json": {
         "type": "Direct",
