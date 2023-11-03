@@ -1,6 +1,6 @@
 namespace Frends.IBMDB2.ExecuteQuery.Tests;
 
-using IBM.Data.Db2;
+using IBM.Data.DB2.Core;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Linq;
