@@ -11,6 +11,7 @@
 	  <PackageTags>Frends</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	  <Description>Frends Task for executing queries in IBMDB2 database</Description>
 	  <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/FrendsPlatform/Frends.IBMDB2/tree/main/Frends.IBMDB2.ExecuteQuery</RepositoryUrl>
@@ -34,9 +35,11 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
 	<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup Condition="'$(OS)' == 'WINDOWS_NT'">
-	<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
-  </ItemGroup>
+
+	<ItemGroup Condition="'$(OS)' == 'WINDOWS_NT'">
+		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(OS)' == 'Unix'">
 	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
   </ItemGroup>
@@ -47,6 +50,10 @@
 		<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 	</PackageReference>
   </ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="clidriver\" />
+	</ItemGroup>
 
 </Project>
 
