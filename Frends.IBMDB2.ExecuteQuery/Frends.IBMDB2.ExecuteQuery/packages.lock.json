@@ -10,9 +10,9 @@
       },
       "Net.IBM.Data.Db2": {
         "type": "Direct",
-        "requested": "[7.0.0.200, )",
-        "resolved": "7.0.0.200",
-        "contentHash": "0eoT9Vi82VZ5kB2qGwWhZAmP0ZgIhzAhWa/q4Nv3OMaa1awM98hHx/jqrzHWgx+XXkNUakem3r23Ua06DhEOIA=="
+        "requested": "[6.0.0.400, )",
+        "resolved": "6.0.0.400",
+        "contentHash": "FktzwZO7qaiq98BGJQc/rCgYOyyoqv1b3G2QyVt8YFSkCmfMDJDRQLZTXUV2kqPAkBPK1I38trYOGL5NZO9m9g=="
       },
       "Newtonsoft.Json": {
         "type": "Direct",
