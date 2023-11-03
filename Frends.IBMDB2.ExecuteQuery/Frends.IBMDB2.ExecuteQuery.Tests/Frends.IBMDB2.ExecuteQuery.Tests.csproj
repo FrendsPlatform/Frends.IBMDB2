@@ -27,12 +27,4 @@
     <ProjectReference Include="..\Frends.IBMDB2.ExecuteQuery\Frends.IBMDB2.ExecuteQuery.csproj" />
   </ItemGroup>
 
-	<ItemGroup Condition="'$(OS)' == 'WINDOWS_NT'">
-		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(OS)' == 'Unix'">
-		<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
-	</ItemGroup>
-
 </Project>

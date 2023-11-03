@@ -29,6 +29,7 @@ internal class UnitTests
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
             var test1 = RunCommandWithBash("find $HOME -name libdb2.so");
+            Debug.WriteLine(test1);
             Console.WriteLine(test1);
             var test = RunCommandWithBash(@$"export LD_LIBRARY_PATH={test1}");
             Console.WriteLine(test);
