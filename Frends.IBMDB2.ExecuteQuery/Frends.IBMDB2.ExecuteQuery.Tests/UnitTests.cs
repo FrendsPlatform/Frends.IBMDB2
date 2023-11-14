@@ -39,27 +39,29 @@ internal class UnitTests
     }
 
     [SetUp]
-    public void Init()
+    public async Task Init()
     {
-        using var connection = new DB2Connection(_connString);
-        connection.Open();
-        var createTable = connection.CreateCommand();
-        createTable.CommandText = $@"CREATE TABLE db2inst1.{_tableName} ( Id int, LASTNAME varchar(255), FIRSTNAME varchar(255) );";
-        createTable.ExecuteNonQuery();
-        connection.Close();
-        connection.Dispose();
+        var input = new Input()
+        {
+            ConnectionString = _connString,
+            Query = $@"CREATE TABLE db2inst1.{_tableName} ( Id int, LASTNAME varchar(255), FIRSTNAME varchar(255) );",
+            ExecuteType = ExecuteType.NonQuery,
+            Parameters = null,
+        };
+        await IBMDB2.ExecuteQuery(input, new Options(), default);
     }
 
     [TearDown]
-    public void CleanUp()
+    public async Task CleanUp()
     {
-        using var connection = new DB2Connection(_connString);
-        connection.Open();
-        var createTable = connection.CreateCommand();
-        createTable.CommandText = $@"DROP TABLE IF EXISTS db2inst1.{_tableName};";
-        createTable.ExecuteNonQuery();
-        connection.Close();
-        connection.Dispose();
+        var input = new Input()
+        {
+            ConnectionString = _connString,
+            Query = $@"DROP TABLE IF EXISTS db2inst1.{_tableName};",
+            ExecuteType = ExecuteType.NonQuery,
+            Parameters = null,
+        };
+        await IBMDB2.ExecuteQuery(input, new Options(), default);
     }
 
     [Test]
@@ -129,7 +131,7 @@ internal class UnitTests
             Assert.AreEqual(3, insert.RecordsAffected);
             Assert.IsNull(insert.ErrorMessage);
             Assert.AreEqual(3, (int)insert.Data["AffectedRows"]);
-            Assert.AreEqual(3, GetRowCount()); // Make sure rows inserted before moving on.
+            Assert.AreEqual(3, await GetRowCount()); // Make sure rows inserted before moving on.
 
             // Select all
             var select = await IBMDB2.ExecuteQuery(inputSelect, options, default);
@@ -143,7 +145,7 @@ internal class UnitTests
             Assert.AreEqual("Forst", (string)select.Data[1]["FIRSTNAME"]);
             Assert.AreEqual("Hiiri", (string)select.Data[2]["LASTNAME"]);
             Assert.AreEqual("Mikki", (string)select.Data[2]["FIRSTNAME"]);
-            Assert.AreEqual(3, GetRowCount()); // double check
+            Assert.AreEqual(3, await GetRowCount()); // double check
 
             // Select single
             var selectSingle = await IBMDB2.ExecuteQuery(inputSelectSingle, options, default);
@@ -153,14 +155,14 @@ internal class UnitTests
             Assert.AreEqual(typeof(JArray), selectSingle.Data.GetType());
             Assert.AreEqual("Suku", (string)selectSingle.Data[0]["LASTNAME"]);
             Assert.AreEqual("Etu", (string)selectSingle.Data[0]["FIRSTNAME"]);
-            Assert.AreEqual(3, GetRowCount()); // double check
+            Assert.AreEqual(3, await GetRowCount()); // double check
 
             // Update
             var update = await IBMDB2.ExecuteQuery(inputUpdate, options, default);
             Assert.IsTrue(update.Success);
             Assert.AreEqual(1, update.RecordsAffected);
             Assert.IsNull(update.ErrorMessage);
-            Assert.AreEqual(3, GetRowCount()); // double check
+            Assert.AreEqual(3, await GetRowCount()); // double check
             var checkUpdateResult = await IBMDB2.ExecuteQuery(inputSelect, options, default);
             Assert.AreEqual("Suku", (string)checkUpdateResult.Data[0]["LASTNAME"]);
             Assert.AreEqual("Etu", (string)checkUpdateResult.Data[0]["FIRSTNAME"]);
@@ -168,35 +170,44 @@ internal class UnitTests
             Assert.AreEqual("Forst", (string)checkUpdateResult.Data[1]["FIRSTNAME"]);
             Assert.AreEqual("Hiiri", (string)checkUpdateResult.Data[2]["LASTNAME"]);
             Assert.AreEqual("Mikki", (string)checkUpdateResult.Data[2]["FIRSTNAME"]);
-            Assert.AreEqual(3, GetRowCount()); // double check
+            Assert.AreEqual(3, await GetRowCount()); // double check
 
             // Delete
             var delete = await IBMDB2.ExecuteQuery(inputDelete, options, default);
             Assert.IsTrue(delete.Success);
             Assert.AreEqual(1, delete.RecordsAffected);
             Assert.IsNull(delete.ErrorMessage);
-            Assert.AreEqual(2, GetRowCount()); // double check
+            Assert.AreEqual(2, await GetRowCount()); // double check
             var checkDeleteResult = await IBMDB2.ExecuteQuery(inputSelect, options, default);
             Assert.AreEqual("Suku", (string)checkDeleteResult.Data[0]["LASTNAME"]);
             Assert.AreEqual("Etu", (string)checkDeleteResult.Data[0]["FIRSTNAME"]);
             Assert.AreEqual("Hiiri", (string)checkDeleteResult.Data[1]["LASTNAME"]);
             Assert.AreEqual("Mikki", (string)checkDeleteResult.Data[1]["FIRSTNAME"]);
 
-            CleanUp();
-            Init();
+            await CleanUp();
+            await Init();
         }
     }
 
-    private static int GetRowCount()
+    private static async Task<int> GetRowCount()
     {
-        using var connection = new DB2Connection(_connString);
-        connection.Open();
-        var getRows = connection.CreateCommand();
-        getRows.CommandText = $"SELECT COUNT(*) FROM {_tableName}";
-        var count = (int)getRows.ExecuteScalar();
-        connection.Close();
-        connection.Dispose();
-        return count;
+        var input = new Input()
+        {
+            ConnectionString = _connString,
+            Query = $"SELECT COUNT(*) FROM {_tableName};",
+            ExecuteType = ExecuteType.Scalar,
+            Parameters = null,
+        };
+
+        var options = new Options()
+        {
+            SqlTransactionIsolationLevel = TransactionIsolationLevel.None,
+            ConnectionTimeoutSeconds = 2,
+            ThrowErrorOnFailure = true,
+        };
+
+        var result = await IBMDB2.ExecuteQuery(input, options, default);
+        return result.RecordsAffected;
     }
 
     private static void TestConnectionBeforeRunningTests(string connectionString)

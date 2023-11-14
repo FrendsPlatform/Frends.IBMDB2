@@ -82,15 +82,19 @@
                         dataObject = command.ExecuteNonQuery();
                         result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
                         break;
+                    case ExecuteType.ExecuteReader:
+                        dataReader = command.ExecuteReader();
+                        table.Load(dataReader);
+                        result = new Result(true, dataReader.RecordsAffected, null, JToken.FromObject(table));
+                        dataReader.Close();
+                        break;
                     case ExecuteType.NonQuery:
                         dataObject = command.ExecuteNonQuery();
                         result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
                         break;
                     case ExecuteType.Scalar:
-                        dataReader = command.ExecuteScalar();
-                        table.Load(dataReader);
-                        result = new Result(true, dataReader.RecordsAffected, null, JToken.FromObject(table));
-                        dataReader.Close();
+                        dataObject = command.ExecuteScalar();
+                        result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
                         break;
                     default:
                         throw new NotSupportedException();
