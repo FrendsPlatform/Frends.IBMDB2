@@ -9,6 +9,7 @@ echo "Start file find"
 # Use find to locate the file and store the result in an array
 filePaths=$(sudo find / -type f -name "libdb2.so")
 
+echo "Files: "
 echo ${filePaths[0]}
 
 # Check if the array is not empty
