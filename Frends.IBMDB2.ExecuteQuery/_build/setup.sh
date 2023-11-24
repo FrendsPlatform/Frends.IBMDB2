@@ -5,7 +5,7 @@
 sudo find / -type f -name "libdb2.so"
 
 # Use find to locate the file and store the result in an array
-mapfile -t myvariable=$(sudo find / -type f -name "libdb2.so")
+myvariable=$(sudo find / -type f -name "libdb2.so")
 
 # Check if the array is not empty
 if [ "${#myvariable[@]}" -gt 0 ]; then
