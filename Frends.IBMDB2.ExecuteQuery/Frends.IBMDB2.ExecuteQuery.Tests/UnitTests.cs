@@ -12,7 +12,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
     using NUnit.Framework;
 
     /// <summary>
-    /// To run Test run this docker command:  
+    /// To run Test run this docker command:
     /// docker run -h db2server --name db2server --restart=always --detach --privileged=true -p  50000:50000 --env-file ./lib/env_list.txt -v $PWD:/database icr.io/db2_community/db2
     /// </summary>
     [TestFixture]
