@@ -4,8 +4,8 @@ docker run -h db2server --name db2server --restart=always --detach --privileged=
 
 myvariable=$(sudo find / -type f -name "libdb2.so")
 
-echo "$myvariable"
+echo $myvariable
 
-echo "${myvariable[0]}"
+echo ${myvariable[0]}
 
 export LD_LIBRARY_PATH="${myvariable[0]}"
