@@ -9,14 +9,14 @@ echo "Start file find"
 # Use find to locate the file and store the result in an array
 filePaths=$(sudo find / -type f -name "libdb2.so")
 
-echo "${filePaths[0]}"
+echo ${filePaths[0]}
 
 # Check if the array is not empty
-if [ "${#filePaths[@]}" -gt 0 ]; then
+if [ ${#filePaths[@]} -gt 0 ]; then
     # Print all paths
     echo "Paths found:"
-    for path in "${filePaths[@]}"; do
-        echo "$path"
+    for path in ${filePaths[@]}; do
+        echo $path
     done
 
     # Set LD_LIBRARY_PATH to the first path
