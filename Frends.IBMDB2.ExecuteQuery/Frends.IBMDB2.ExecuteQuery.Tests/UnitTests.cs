@@ -1,16 +1,14 @@
 namespace Frends.IBMDB2.ExecuteQuery.Tests
 {
-    using IBM.Data.Db2;
-    using Newtonsoft.Json.Linq;
     using System;
-    using System.Linq;
     using System.Collections.Generic;
     using System.Data;
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Frends.IBMDB2.ExecuteQuery.Definitions;
+    using IBM.Data.Db2;
+    using Newtonsoft.Json.Linq;
     using NUnit.Framework;
 
     /// <summary>
