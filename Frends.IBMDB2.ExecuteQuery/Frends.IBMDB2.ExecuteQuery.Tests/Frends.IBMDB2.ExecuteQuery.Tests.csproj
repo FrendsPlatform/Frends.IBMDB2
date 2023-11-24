@@ -27,7 +27,7 @@
 	<ItemGroup Condition="'$(OS)' == 'Windows_NT'">
 		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
 	</ItemGroup>
-	<ItemGroup Condition="'$(OS)' == 'Linux'">
+	<ItemGroup Condition="'$(OS)' == 'Unix'">
 		<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
 	</ItemGroup>
 
