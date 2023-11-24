@@ -24,17 +24,11 @@
 	</PackageReference>
   </ItemGroup>
 
-	<ItemGroup Condition="'$(OS)' == 'Linux'">
-		<None Include="lib\linux\IBM.Data.Db2.dll" Pack="true" PackagePath="/lib/$(TargetFrameworks)">
-			<CopyToOutputDirectory>true</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
-
 	<ItemGroup Condition="'$(OS)' == 'Windows_NT'">
 		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(OS)' == 'Linux'">
-		<Reference Include="lib\linux\IBM.Data.Db2.dll" />
+		<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
 	</ItemGroup>
 
 	<ItemGroup>
