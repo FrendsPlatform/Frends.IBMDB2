@@ -12,11 +12,14 @@ filePaths=$(sudo find / -type f -name "libdb2.so")
 echo "Files: "
 echo ${filePaths[0]}
 
+echo "Files count"
+echo ${filePaths[@]}
+
 # Check if the array is not empty
 if [ ${#filePaths[@]} -gt 0 ]; then
     # Print all paths
     echo "Paths found:"
-    for path in ${filePaths[@]}; do
+    for path in $filePaths; do
         echo $path
     done
 
