@@ -10,10 +10,10 @@ echo "Start file find"
 filePaths=$(sudo find / -type f -name "libdb2.so")
 
 echo "Files: "
-echo ${filePaths[0]}
+echo "${filePaths[0]}"
 
 echo "Files count"
-echo ${filePaths[@]}
+echo "${filePaths[@]}"
 
 # Check if the array is not empty
 if [ ${#filePaths[@]} -gt 0 ]; then
@@ -24,7 +24,7 @@ if [ ${#filePaths[@]} -gt 0 ]; then
     done
 
     # Set LD_LIBRARY_PATH to the first path
-    export LD_LIBRARY_PATH="${filePaths[0]}"
+    export LD_LIBRARY_PATH=${filePaths[0]}
     echo "LD_LIBRARY_PATH set to: $LD_LIBRARY_PATH"
 else
     echo "File not found"
