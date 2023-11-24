@@ -18,10 +18,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="FrendsTaskMetadata.json" Pack="true" PackagePath="/">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+	  <None Include="FrendsTaskMetadata.json" Pack="true" PackagePath="/">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
   </ItemGroup>
+
+	<ItemGroup Condition="'$(OS)' == 'Linux'">
+		<None Include="lib\linux\IBM.Data.Db2.dll" Pack="true" PackagePath="/lib/$(TargetFrameworks)">
+			<CopyToOutputDirectory>true</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
   <ItemGroup>
 	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
@@ -37,9 +43,11 @@
 	<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />
-		<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" Condition="$([MSBuild]::IsOsPlatform('Linux'))" />
+	<ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
+	</ItemGroup>
+	<ItemGroup Condition="'$(OS)' == 'Linux'">
+		<Reference Include="lib\linux\IBM.Data.Db2.dll" />
 	</ItemGroup>
 	
 	<ItemGroup>
