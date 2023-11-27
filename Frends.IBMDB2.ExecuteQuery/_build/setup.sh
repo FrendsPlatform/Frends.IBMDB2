@@ -4,15 +4,7 @@ docker run -h db2server --name db2server --restart=always --detach --privileged=
 
 # Use find to locate the file and store the result in an array
 
-nuget=$(sudo find / -name ".nuget")
-
-echo "Nuget: $nuget"
-
-packages=$(sudo find $nuget -name "packages")
-
-echo $packages
-
-basePath=$(sudo find $packages -name "net.ibm.data.db2-lnx")
+basePath=$(sudo find / -name "net.ibm.data.db2-lnx")
 
 echo "Base path: $basePath"
 
