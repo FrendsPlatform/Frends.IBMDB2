@@ -8,3 +8,5 @@ export LD_LIBRARY_PATH="$PWD/_build\net.ibm.data.db2-lnx\7.0.0.200\buildTransiti
 
 echo "LD_LIBRARY_PATH set to: $LD_LIBRARY_PATH"
 
+ls $LD_LIBRARY_PATH
+
