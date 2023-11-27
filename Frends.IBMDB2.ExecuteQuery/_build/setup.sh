@@ -8,17 +8,21 @@ nuget=$(sudo find / -name ".nuget")
 
 echo "Nuget: $nuget"
 
-basePath=$(sudo find $HOME -name "net.ibm.data.db2-lnx")
+basePath=$(sudo find $nuget -name "net.ibm.data.db2-lnx")
 
-clidriver=$(sudo find ${basePath[0]} -name "clidriver")
+echo "Base path: $basePath"
 
-lib=$(sudo find ${clidriver[0]} -name "lib")
+clidriver=$(sudo find $basePath -name "clidriver")
 
-echo $lib
+echo "Clidriver: $clidriver"
+
+lib=$(sudo find $clidriver -name "lib")
+
+echo "Lib: $lib"
 
 # Set LD_LIBRARY_PATH to the first path
 
-export LD_LIBRARY_PATH="${lib[0]}"
+export LD_LIBRARY_PATH="$lib"
 
 echo "LD_LIBRARY_PATH set to: $LD_LIBRARY_PATH"
 
