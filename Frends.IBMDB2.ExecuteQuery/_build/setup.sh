@@ -4,7 +4,7 @@ docker run -h db2server --name db2server --restart=always --detach --privileged=
 
 # Set LD_LIBRARY_PATH to the first path
 
-export LD_LIBRARY_PATH="$PWD/_build\net.ibm.data.db2-lnx\7.0.0.200\buildTransitive\clidriver\lib"
+export LD_LIBRARY_PATH="$PWD/_build/net.ibm.data.db2-lnx/7.0.0.200/buildTransitive/clidriver/lib"
 
 echo "LD_LIBRARY_PATH set to: $LD_LIBRARY_PATH"
 
