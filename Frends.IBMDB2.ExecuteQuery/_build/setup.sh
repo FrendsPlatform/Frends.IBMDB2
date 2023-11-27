@@ -6,15 +6,15 @@ docker run -h db2server --name db2server --restart=always --detach --privileged=
 
 basePath=$(sudo find $HOME -name "net.ibm.data.db2-lnx")
 
-echo $basePath
+echo "Base path: $basePath"
 
 clidriver=$(sudo find $basePath -name "clidriver")
 
-echo $clidriver
+echo "Clidriver: $clidriver"
 
 lib=$(sudo find $clidriver -name "lib")
 
-echo $lib
+echo "Lib: $lib"
 
 # Set LD_LIBRARY_PATH to the first path
 
