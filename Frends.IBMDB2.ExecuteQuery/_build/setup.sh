@@ -8,7 +8,11 @@ nuget=$(sudo find / -name ".nuget")
 
 echo "Nuget: $nuget"
 
-basePath=$(sudo find $nuget -name "net.ibm.data.db2-lnx")
+packages=$(sudo find $nuget -name "packages")
+
+echo $packages
+
+basePath=$(sudo find $packages -name "net.ibm.data.db2-lnx")
 
 echo "Base path: $basePath"
 
