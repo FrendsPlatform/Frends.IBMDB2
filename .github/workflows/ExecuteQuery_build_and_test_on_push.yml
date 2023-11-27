@@ -13,7 +13,7 @@ jobs:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_test.yml@main
     with:
       workdir: Frends.IBMDB2.ExecuteQuery
-      prebuild_command: chmod 777 ./_build/setup.sh && source ./_build/setup.sh
+      prebuild_command: chmod 777 ./_build/setup.sh && source ./_build/setup.sh && echo $LD_LIBRARY_PATH
 
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Net.IBM.Data.Db2-lnx</id>
+    <version>7.0.0.200</version>
+    <title>IBM Data Server provider for .NET 7</title>
+    <authors>IBM Corporation</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">Lic_en.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <description>IBM Data Server provider for .NET 7 on Linux. For more details, please visit: https://community.ibm.com/community/user/hybriddatamanagement/blogs/michelle-betbadal1/2020/04/29/getting-started-with-ibm-net-provider-for-net-core</description>
+    <releaseNotes>IBM Data Server provider for .NET 7. For more details, please visit: https://community.ibm.com/community/user/hybriddatamanagement/blogs/michelle-betbadal1/2020/04/29/getting-started-with-ibm-net-provider-for-net-core</releaseNotes>
+    <copyright>Copyright(c) 2023 IBM Corporation. All rights reserved</copyright>
+    <tags>IBM .NET 7 IBM Data Server Driver for .NET 7 IBM IBM DB Data Informix ADO.NET</tags>
+    <dependencies>
+      <group targetFramework="net6.0">
+        <dependency id="System.Runtime.Loader" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
