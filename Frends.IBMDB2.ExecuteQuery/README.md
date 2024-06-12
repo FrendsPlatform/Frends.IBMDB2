@@ -1,4 +1,5 @@
 # Frends.IBMDB2.ExecuteQuery
+
 Frends Task for executing queries in IBMDB2 database.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
@@ -33,6 +34,6 @@ Run the tests
 
 `dotnet pack --configuration Release`
 
-### Third party licenses
+### Third-party licenses
 
-StyleCop.Analyzer version (unmodified version 1.1.118) used to analyze code uses Apache-2.0 license, full text and source code can be found in https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/README.md
+StyleCop.Analyzer version (unmodified version 1.1.118) used to analyze code uses Apache-2.0 license, full text and source code can be found in [StyleCopAnalyzers GitHub](https://github.com/DotNetAnalyzers/StyleCopAnalyzers/blob/master/README.md)
