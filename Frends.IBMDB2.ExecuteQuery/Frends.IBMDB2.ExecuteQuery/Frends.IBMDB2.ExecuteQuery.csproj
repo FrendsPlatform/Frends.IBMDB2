@@ -37,13 +37,11 @@
 	<PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
 
-	<ItemGroup Condition="'$(OS)' == 'Windows_NT'">
-		<PackageReference Include="Net.IBM.Data.Db2" Version="7.0.0.200" />
-	</ItemGroup>
-	<ItemGroup Condition="'$(OS)' == 'Unix'">
-		<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="7.0.0.200" />
-	</ItemGroup>
-	
+  <ItemGroup>
+	<PackageReference Include="Net.IBM.Data.Db2-lnx" Version="6.0.0.500" Condition="$([MSBuild]::IsOsPlatform('Linux'))" />
+  	<PackageReference Include="Net.IBM.Data.Db2" Version="6.0.0.500" Condition="$([MSBuild]::IsOsPlatform('Windows'))" />
+  </ItemGroup>
+
 	<ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
 		<PrivateAssets>all</PrivateAssets>
