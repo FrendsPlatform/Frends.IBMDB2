@@ -22,7 +22,10 @@
         /// <param name="options">Options parameters.</param>
         /// <param name="cancellationToken">Cancellation token given by Frends.</param>
         /// <returns>Object { bool Success, int RecordsAffected, string ErrorMessage, dynamic data }.</returns>
-        public static async Task<Result> ExecuteQuery([PropertyTab] Input input, [PropertyTab] Options options, CancellationToken cancellationToken)
+        public static async Task<Result> ExecuteQuery(
+            [PropertyTab] Input input,
+            [PropertyTab] Options options,
+            CancellationToken cancellationToken)
         {
             Result result;
 
@@ -36,7 +39,11 @@
                 foreach (var parameter in input.Parameters)
                 {
                     if (parameter.DataType is DataTypes.Auto)
-                        command.Parameters.Add(parameterName: parameter.Name, value: parameter.Value);
+                    {
+                        command.Parameters.Add(
+                            parameterName: parameter.Name,
+                            value: parameter.Value);
+                    }
                     else
                     {
                         var dbType = (DB2Type)Enum.Parse(typeof(DB2Type), parameter.DataType.ToString());
@@ -58,7 +65,11 @@
             return result;
         }
 
-        private static async Task<Result> ExecuteHandler(Input input, Options options, DB2Command command, CancellationToken cancellationToken)
+        private static async Task<Result> ExecuteHandler(
+            Input input,
+            Options options,
+            DB2Command command,
+            CancellationToken cancellationToken)
         {
             Result result;
             object dataObject;
@@ -74,27 +85,52 @@
                         {
                             dataReader = command.ExecuteReader();
                             table.Load(dataReader);
-                            result = new Result(true, dataReader.RecordsAffected, null, JToken.FromObject(table));
+                            result = new Result
+                            {
+                                Success = true,
+                                RecordsAffected = dataReader.RecordsAffected,
+                                Data = JToken.FromObject(table),
+                            };
                             dataReader.Close();
                             break;
                         }
 
                         dataObject = command.ExecuteNonQuery();
-                        result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                        result = new Result
+                        {
+                            Success = true,
+                            RecordsAffected = (int)dataObject,
+                            Data = JToken.FromObject(new { AffectedRows = dataObject }),
+                        };
                         break;
                     case ExecuteType.ExecuteReader:
                         dataReader = command.ExecuteReader();
                         table.Load(dataReader);
-                        result = new Result(true, dataReader.RecordsAffected, null, JToken.FromObject(table));
+                        result = new Result
+                        {
+                            Success = true,
+                            RecordsAffected = dataReader.RecordsAffected,
+                            Data = JToken.FromObject(table),
+                        };
                         dataReader.Close();
                         break;
                     case ExecuteType.NonQuery:
                         dataObject = command.ExecuteNonQuery();
-                        result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                        result = new Result
+                        {
+                            Success = true,
+                            RecordsAffected = (int)dataObject,
+                            Data = JToken.FromObject(new { AffectedRows = dataObject }),
+                        };
                         break;
                     case ExecuteType.Scalar:
                         dataObject = command.ExecuteScalar();
-                        result = new Result(true, (int)dataObject, null, JToken.FromObject(new { AffectedRows = dataObject }));
+                        result = new Result
+                        {
+                            Success = true,
+                            RecordsAffected = (int)dataObject,
+                            Data = JToken.FromObject(new { AffectedRows = dataObject }),
+                        };
                         break;
                     default:
                         throw new NotSupportedException();
@@ -113,9 +149,20 @@
                 if (command.Transaction is null)
                 {
                     if (options.ThrowErrorOnFailure)
-                        throw new Exception("ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.", ex);
+                    {
+                        throw new Exception(
+                            "ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.",
+                            ex);
+                    }
                     else
-                        return new Result(false, 0, $"ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback. {ex}", null);
+                    {
+                        return new Result
+                        {
+                            Success = false,
+                            ErrorMessage =
+                                $"ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback. {ex}",
+                        };
+                    }
                 }
                 else
                 {
@@ -126,15 +173,37 @@
                     catch (Exception rollbackEx)
                     {
                         if (options.ThrowErrorOnFailure)
-                            throw new Exception("ExecuteHandler exception: An exception occurred on transaction rollback.", rollbackEx);
+                        {
+                            throw new Exception(
+                                "ExecuteHandler exception: An exception occurred on transaction rollback.",
+                                rollbackEx);
+                        }
                         else
-                            return new Result(false, 0, $"ExecuteHandler exception: An exception occurred on transaction rollback. Rollback exception: {rollbackEx}. ||  Exception leading to rollback: {ex}", null);
+                        {
+                            return new Result
+                            {
+                                Success = false,
+                                ErrorMessage =
+                                    $"ExecuteHandler exception: An exception occurred on transaction rollback. Rollback exception: {rollbackEx}. ||  Exception leading to rollback: {ex}",
+                            };
+                        }
                     }
 
                     if (options.ThrowErrorOnFailure)
-                        throw new Exception("ExecuteHandler exception: (If required) transaction rollback completed without exception.", ex);
+                    {
+                        throw new Exception(
+                            "ExecuteHandler exception: (If required) transaction rollback completed without exception.",
+                            ex);
+                    }
                     else
-                        return new Result(false, 0, $"ExecuteHandler exception: (If required) transaction rollback completed without exception. {ex}.", null);
+                    {
+                        return new Result
+                        {
+                            Success = false,
+                            ErrorMessage =
+                                $"ExecuteHandler exception: (If required) transaction rollback completed without exception. {ex}.",
+                        };
+                    }
                 }
             }
         }
