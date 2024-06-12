@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 /// <summary>
-/// Input class usually contains parameters that are required.
+/// Input parameters.
 /// </summary>
 public class Input
 {
