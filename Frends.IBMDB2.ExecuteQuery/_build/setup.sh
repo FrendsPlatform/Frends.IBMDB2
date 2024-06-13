@@ -1,9 +1,6 @@
 #!/bin/bash
-sudo apt-get update
-sudo apt-get install -y libxml2-dev
 
 dotnet build
-
 
 # Use find to locate the file and store the result in an array
 
