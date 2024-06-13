@@ -7,13 +7,13 @@ dotnet build
 
 # Use find to locate the file and store the result in an array
 
-basePath=$(find / -name "net.ibm.data.db2-lnx")
+basePath=$(sudo find / -name "net.ibm.data.db2-lnx")
 echo "Base path: $basePath"
 
-clidriver=$(find / -name "clidriver")
+clidriver=$(sudo find / -name "clidriver")
 echo "Clidriver: $clidriver"
 
-lib=$(find $clidriver -name "lib")
+lib=$(sudo find $clidriver -name "lib")
 echo "Lib: $lib"
 
 # Set LD_LIBRARY_PATH to the first path
