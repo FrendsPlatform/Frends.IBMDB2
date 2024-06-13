@@ -8,6 +8,9 @@ on:
       - 'Frends.IBMDB2.ExecuteQuery/**'
   workflow_dispatch:
 
+env:
+  LD_LIBRARY_PATH: /home/runner/.nuget/packages/net.ibm.data.db2-lnx/6.0.0.500/buildTransitive/clidriver/lib
+
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_main.yml@main
