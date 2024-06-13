@@ -2,6 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>net6.0</TargetFramework>
+	  <ProcessorArchitecture>amd64</ProcessorArchitecture>
 	  <LangVersion>Latest</LangVersion>
 	  <Version>1.0.0</Version>
 	  <Authors>Frends</Authors>
@@ -11,7 +12,6 @@
 	  <PackageTags>Frends</PackageTags>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
-	  <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 	  <Description>Frends Task for executing queries in IBMDB2 database</Description>
 	  <PackageProjectUrl>https://frends.com/</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/FrendsPlatform/Frends.IBMDB2/tree/main/Frends.IBMDB2.ExecuteQuery</RepositoryUrl>
