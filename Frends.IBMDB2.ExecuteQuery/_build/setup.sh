@@ -10,7 +10,7 @@ dotnet build
 basePath=$(sudo find / -name "net.ibm.data.db2-lnx")
 echo "Base path: $basePath"
 
-clidriver=$(sudo find / -name "clidriver")
+clidriver=$(sudo find basePath -name "clidriver")
 echo "Clidriver: $clidriver"
 
 lib=$(sudo find $clidriver -name "lib")
