@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+	<ProcessorArchitecture>amd64</ProcessorArchitecture>
     <IsPackable>false</IsPackable>
 	<LangVersion>Latest</LangVersion>
   </PropertyGroup>
