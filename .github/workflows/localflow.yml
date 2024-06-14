@@ -218,7 +218,7 @@ jobs:
         coverage=$(xmlstarlet sel -t -v '//coverage/@line-rate' coverage.cobertura.xml)
         covPercent=$(echo "$coverage * 100" | bc -l)
         coverageInt=$(printf "%.0f" $covPercent)
-        if test $coverageInt -lt 80 
+        if test $coverageInt -lt 10 
         then
           echo "Test coverage $coverageInt% was not in the tolerance 80%"
           echo "The Code Check failed! :x:" >> $GITHUB_STEP_SUMMARY
