@@ -11,7 +11,7 @@ env:
   DAY_OF_WEEK: Monday
 jobs:
   build:
-    uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_test.yml@main
+    uses: ./.github/workflows/localflow.yml
     with:
       workdir: Frends.IBMDB2.ExecuteQuery
       prebuild_command: chmod 777 ./_build/setup.sh && source ./_build/setup.sh
