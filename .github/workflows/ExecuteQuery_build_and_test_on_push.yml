@@ -7,17 +7,17 @@ on:
     paths:
       - 'Frends.IBMDB2.ExecuteQuery/**'
   workflow_dispatch:
-
 env:
-  LD_LIBRARY_PATH: "/home/runner/.nuget/packages/net.ibm.data.db2-lnx/6.0.0.500/buildTransitive/clidriver/lib"
-
+  DAY_OF_WEEK: Monday
 jobs:
   build:
     uses: FrendsPlatform/FrendsTasks/.github/workflows/linux_build_test.yml@main
     with:
       workdir: Frends.IBMDB2.ExecuteQuery
       prebuild_command: chmod 777 ./_build/setup.sh && source ./_build/setup.sh
+      env_var_name_1: LD_LIBRARY_PATH
       
     secrets:
       badge_service_api_key: ${{ secrets.BADGE_SERVICE_API_KEY }}
       test_feed_api_key: ${{ secrets.TASKS_TEST_FEED_API_KEY }}
+      env_var_value_1: /home/runner/.nuget/packages/net.ibm.data.db2-lnx/6.0.0.500/buildTransitive/clidriver/lib
