@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  LD_LIBRARY_PATH: /home/runner/.nuget/packages/net.ibm.data.db2-lnx/6.0.0.500/buildTransitive/clidriver/lib
+  LD_LIBRARY_PATH: "/home/runner/.nuget/packages/net.ibm.data.db2-lnx/6.0.0.500/buildTransitive/clidriver/lib"
 
 jobs:
   build:
