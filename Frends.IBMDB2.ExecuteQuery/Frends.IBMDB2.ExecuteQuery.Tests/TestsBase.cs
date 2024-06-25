@@ -106,7 +106,7 @@ internal abstract class TestsBase
                     break;
                 }
 
-                Thread.Sleep(1000);
+                Thread.Sleep(60000);
             }
         }
 
