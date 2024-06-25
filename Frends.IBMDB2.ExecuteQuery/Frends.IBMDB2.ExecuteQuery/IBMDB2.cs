@@ -148,21 +148,10 @@
 
                 if (command.Transaction is null)
                 {
-                    if (options.ThrowErrorOnFailure)
-                    {
-                        throw new Exception(
-                            "ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.",
-                            ex);
-                    }
-                    else
-                    {
-                        return new Result
-                        {
-                            Success = false,
-                            ErrorMessage =
-                                $"ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback. {ex}",
-                        };
-                    }
+                    return HandleError(
+                        ex,
+                        "ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.",
+                        options.ThrowErrorOnFailure);
                 }
                 else
                 {
@@ -172,38 +161,16 @@
                     }
                     catch (Exception rollbackEx)
                     {
-                        if (options.ThrowErrorOnFailure)
-                        {
-                            throw new Exception(
-                                "ExecuteHandler exception: An exception occurred on transaction rollback.",
-                                rollbackEx);
-                        }
-                        else
-                        {
-                            return new Result
-                            {
-                                Success = false,
-                                ErrorMessage =
-                                    $"ExecuteHandler exception: An exception occurred on transaction rollback. Rollback exception: {rollbackEx}. ||  Exception leading to rollback: {ex}",
-                            };
-                        }
+                        return HandleError(
+                            rollbackEx,
+                            $"ExecuteHandler exception: An exception occurred on transaction rollback. Exception leading to rollback: {ex}.",
+                            options.ThrowErrorOnFailure);
                     }
 
-                    if (options.ThrowErrorOnFailure)
-                    {
-                        throw new Exception(
-                            "ExecuteHandler exception: (If required) transaction rollback completed without exception.",
-                            ex);
-                    }
-                    else
-                    {
-                        return new Result
-                        {
-                            Success = false,
-                            ErrorMessage =
-                                $"ExecuteHandler exception: (If required) transaction rollback completed without exception. {ex}.",
-                        };
-                    }
+                    return HandleError(
+                        ex,
+                        "ExecuteHandler exception: (If required) transaction rollback completed without exception.",
+                        options.ThrowErrorOnFailure);
                 }
             }
         }
@@ -220,6 +187,14 @@
                 TransactionIsolationLevel.Snapshot => IsolationLevel.Snapshot,
                 _ => IsolationLevel.ReadCommitted,
             };
+        }
+
+        private static Result HandleError(Exception ex, string message, bool throwErrorOnFailure)
+        {
+            if (throwErrorOnFailure)
+                throw new Exception(message, ex);
+            else
+                return new Result { Success = false, ErrorMessage = $"{message} {ex}." };
         }
     }
 }

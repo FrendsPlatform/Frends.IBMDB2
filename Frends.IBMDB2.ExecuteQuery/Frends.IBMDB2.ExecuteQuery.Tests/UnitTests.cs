@@ -2,12 +2,9 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using Frends.IBMDB2.ExecuteQuery.Definitions;
-    using IBM.Data.Db2;
     using Newtonsoft.Json.Linq;
     using NUnit.Framework;
 
@@ -16,103 +13,144 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
     /// docker run -h db2server --name db2server --restart=always --detach --privileged=true -p  50000:50000 --env-file ./lib/env_list.txt -v $PWD:/database icr.io/db2_community/db2
     /// </summary>
     [TestFixture]
-    internal class UnitTests
+    internal class UnitTests : TestsBase
     {
-        private static readonly string _connString = "Server=localhost:50000;Database=testdb;User Id=db2inst1;Password=password";
-        private static readonly string _tableName = "TestTable";
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
+        [Test]
+        public void ExceptionThrowsError()
         {
-            TestConnectionBeforeRunningTests(_connString);
+            var options = TestOptions();
+            options.ThrowErrorOnFailure = true;
+            var inputInsert = new Input
+            {
+                ConnectionString = ConnString,
+                Query = $@"INSERT INTO {TableName} VALUES (@id, 'Suku', 'Etu')",
+                ExecuteType = (ExecuteType)99,
+                Parameters = TestParameters().ToArray(),
+            };
+
+            Assert.ThrowsAsync<Exception>(
+                async () => await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None));
         }
 
-        [SetUp]
-        public async Task Init()
+        [Test]
+        public async Task ExceptionReturnsFailedResult()
         {
-            var input = new Input()
+            var options = TestOptions();
+            options.ThrowErrorOnFailure = false;
+            var inputInsert = new Input
             {
-                ConnectionString = _connString,
-                Query = $@"CREATE TABLE db2inst1.{_tableName} ( Id int, LASTNAME varchar(255), FIRSTNAME varchar(255) );",
-                ExecuteType = ExecuteType.NonQuery,
-                Parameters = null,
+                ConnectionString = ConnString,
+                Query = $@"INSERT INTO {TableName} VALUES (@id, 'Suku', 'Etu')",
+                ExecuteType = (ExecuteType)99,
+                Parameters = TestParameters().ToArray(),
             };
-            await IBMDB2.ExecuteQuery(input, new Options(), default);
+
+            var insert = await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None);
+            Assert.IsFalse(insert.Success);
         }
 
-        [TearDown]
-        public async Task CleanUp()
+        [Test]
+        public async Task ParameterProvidedWithInput()
         {
-            var input = new Input()
+            var options = TestOptions();
+            var inputInsert = new Input
             {
-                ConnectionString = _connString,
-                Query = $@"DROP TABLE IF EXISTS db2inst1.{_tableName};",
+                ConnectionString = ConnString,
+                Query = $@"INSERT INTO {TableName} VALUES (@id, 'Suku', 'Etu')",
                 ExecuteType = ExecuteType.NonQuery,
-                Parameters = null,
+                Parameters = TestParameters().ToArray(),
             };
-            await IBMDB2.ExecuteQuery(input, new Options(), default);
+
+            var insert = await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None);
+            Assert.IsTrue(insert.Success);
+            Assert.AreEqual(1, insert.RecordsAffected);
+            Assert.IsNull(insert.ErrorMessage);
+            Assert.AreEqual(1, (int)insert.Data["AffectedRows"]);
+            Assert.AreEqual(1, await GetRowCount()); // Make sure rows inserted before moving on.
+        }
+
+        [Test]
+        public async Task ParameterWithNoAutoType()
+        {
+            var parameters = TestParameters();
+            parameters[0].DataType = DataTypes.Integer;
+
+            var options = TestOptions();
+
+            var inputInsert = new Input
+            {
+                ConnectionString = ConnString,
+                Query = $@"INSERT INTO {TableName} VALUES (@id, 'Suku', 'Etu')",
+                ExecuteType = ExecuteType.NonQuery,
+                Parameters = parameters.ToArray(),
+            };
+
+            var insert = await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None);
+            Assert.IsTrue(insert.Success);
+            Assert.AreEqual(1, insert.RecordsAffected);
+            Assert.IsNull(insert.ErrorMessage);
+            Assert.AreEqual(1, (int)insert.Data["AffectedRows"]);
+            Assert.AreEqual(1, await GetRowCount()); // Make sure rows inserted before moving on.
         }
 
         [Test]
         public async Task TestExecuteQuery_Auto()
         {
             var transactionLevels = new List<TransactionIsolationLevel>()
-        {
-            TransactionIsolationLevel.Unspecified,
-            TransactionIsolationLevel.Serializable,
-            TransactionIsolationLevel.None,
-            TransactionIsolationLevel.ReadUncommitted,
-            TransactionIsolationLevel.ReadCommitted,
-        };
+            {
+                TransactionIsolationLevel.Unspecified,
+                TransactionIsolationLevel.Serializable,
+                TransactionIsolationLevel.None,
+                TransactionIsolationLevel.ReadUncommitted,
+                TransactionIsolationLevel.ReadCommitted,
+            };
 
             var inputInsert = new Input()
             {
-                ConnectionString = _connString,
-                Query = $@"INSERT INTO {_tableName} VALUES (1, 'Suku', 'Etu'), (2, 'Last', 'Forst'), (3, 'Hiiri', 'Mikki')",
+                ConnectionString = ConnString,
+                Query =
+                    $@"INSERT INTO {TableName} VALUES (1, 'Suku', 'Etu'), (2, 'Last', 'Forst'), (3, 'Hiiri', 'Mikki')",
                 ExecuteType = ExecuteType.NonQuery,
                 Parameters = null,
             };
 
             var inputSelect = new Input()
             {
-                ConnectionString = _connString,
-                Query = $"select * from {_tableName}",
-                ExecuteType = ExecuteType.Auto,
+                ConnectionString = ConnString,
+                Query = $"select * from {TableName}",
+                ExecuteType = ExecuteType.ExecuteReader,
                 Parameters = null,
             };
 
             var inputSelectSingle = new Input()
             {
-                ConnectionString = _connString,
-                Query = $"select * from {_tableName} where Id = 1",
+                ConnectionString = ConnString,
+                Query = $"select * from {TableName} where Id = 1",
                 ExecuteType = ExecuteType.Auto,
                 Parameters = null,
             };
 
             var inputUpdate = new Input()
             {
-                ConnectionString = _connString,
-                Query = $@"update {_tableName} set LASTNAME = 'Edit' where Id = 2",
+                ConnectionString = ConnString,
+                Query = $@"update {TableName} set LASTNAME = 'Edit' where Id = 2",
                 ExecuteType = ExecuteType.Auto,
                 Parameters = null,
             };
 
             var inputDelete = new Input()
             {
-                ConnectionString = _connString,
-                Query = $"delete from {_tableName} where Id = 2",
+                ConnectionString = ConnString,
+                Query = $"delete from {TableName} where Id = 2",
                 ExecuteType = ExecuteType.Auto,
                 Parameters = null,
             };
 
+            var options = TestOptions();
+
             foreach (var level in transactionLevels)
             {
-                var options = new Options()
-                {
-                    SqlTransactionIsolationLevel = level,
-                    ConnectionTimeoutSeconds = 2,
-                    ThrowErrorOnFailure = true,
-                };
+                options.SqlTransactionIsolationLevel = level;
 
                 // Insert rows
                 var insert = await IBMDB2.ExecuteQuery(inputInsert, options, default);
@@ -176,50 +214,6 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 await CleanUp();
                 await Init();
             }
-        }
-
-        private static async Task<int> GetRowCount()
-        {
-            var input = new Input()
-            {
-                ConnectionString = _connString,
-                Query = $"SELECT COUNT(*) FROM {_tableName};",
-                ExecuteType = ExecuteType.Scalar,
-                Parameters = null,
-            };
-
-            var options = new Options()
-            {
-                SqlTransactionIsolationLevel = TransactionIsolationLevel.None,
-                ConnectionTimeoutSeconds = 2,
-                ThrowErrorOnFailure = true,
-            };
-
-            var result = await IBMDB2.ExecuteQuery(input, options, default);
-            return result.RecordsAffected;
-        }
-
-        private static void TestConnectionBeforeRunningTests(string connectionString)
-        {
-            using var con = new DB2Connection(connectionString);
-            foreach (var i in Enumerable.Range(1, 15))
-            {
-                try
-                {
-                    con.Open();
-                }
-                catch
-                {
-                    if (con.State == ConnectionState.Open)
-                        break;
-
-                    Thread.Sleep(60000);
-                }
-            }
-
-            if (con.State != ConnectionState.Open)
-                throw new Exception("Check that the docker container is up and running.");
-            con.Close();
         }
     }
 }
