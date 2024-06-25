@@ -51,9 +51,9 @@ internal abstract class TestsBase
     }
 
     protected static List<QueryParameter> TestParameters() =>
-        new ()
+        new()
         {
-            new ()
+            new()
             {
                 Name = "id",
                 Value = "1",
@@ -62,7 +62,7 @@ internal abstract class TestsBase
         };
 
     protected static Options TestOptions() =>
-        new ()
+        new()
         {
             SqlTransactionIsolationLevel = TransactionIsolationLevel.ReadCommitted,
             ConnectionTimeoutSeconds = 2,

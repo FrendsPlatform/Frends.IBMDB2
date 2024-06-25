@@ -241,7 +241,7 @@ jobs:
         if [ "${{ env.workdir }}" != '.' ]; then
           badgeKey="${{ github.repository }}/${{ env.workdir }}|${{ github.ref_name }}"
         fi
-        coverageReport=$(find . -name "coverage.cobertura.xml")
+        coverageReport=$(sudo find . -name "coverage.cobertura.xml")
         mv $coverageReport .
         coverage=$(xmlstarlet sel -t -v '//coverage/@line-rate' coverage.cobertura.xml)
         covPercent=$(echo "$coverage * 100" | bc -l)
