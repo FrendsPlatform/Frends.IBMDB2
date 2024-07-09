@@ -1,7 +1,7 @@
 ﻿namespace Frends.IBMDB2.ExecuteQuery.Definitions;
 
 /// <summary>
-/// SQL Server-specific data type.
+/// IBM DB2-specific data type.
 /// </summary>
 public enum DataTypes
 {
