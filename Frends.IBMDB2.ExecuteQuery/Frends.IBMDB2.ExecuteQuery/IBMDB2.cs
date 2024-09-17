@@ -194,7 +194,7 @@
             if (throwErrorOnFailure)
                 throw new Exception(message, ex);
             else
-                return new Result { Success = false, ErrorMessage = $"{message} {ex}." };
+                return new Result { Success = false, ErrorMessage = $"{message} Exception: {ex.Message}." };
         }
     }
 }
