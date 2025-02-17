@@ -11,3 +11,4 @@
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1520:Use braces consistently", Justification = "Following Frends documentation guidelines", Scope = "namespaceanddescendants", Target = "~N:Frends.IBMDB2.ExecuteQuery")]
 [assembly: SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1101:Prefix local calls with this", Justification = "Following Frends documentation guidelines", Scope = "namespaceanddescendants", Target = "~N:Frends.IBMDB2.ExecuteQuery")]
 [assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1503:Braces should not be omitted", Justification = "Following Frends documentation guidelines", Scope = "namespaceanddescendants", Target = "~N:Frends.IBMDB2.ExecuteQuery")]
+[assembly: SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1000:The keyword 'new' should be followed by a space", Justification = "Obsolete in new dotnet", Scope = "namespaceanddescendants", Target = "~N:Frends.IBMDB2.ExecuteQuery")]

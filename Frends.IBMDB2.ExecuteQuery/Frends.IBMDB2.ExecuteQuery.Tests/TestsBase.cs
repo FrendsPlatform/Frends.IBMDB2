@@ -51,15 +51,14 @@ internal abstract class TestsBase
     }
 
     protected static List<QueryParameter> TestParameters() =>
-        new()
-        {
-            new()
+        [
+            new ()
             {
                 Name = "id",
                 Value = "1",
                 DataType = DataTypes.Auto,
             },
-        };
+        ];
 
     protected static Options TestOptions() =>
         new()
