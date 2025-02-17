@@ -4,7 +4,7 @@
 	  <TargetFramework>net6.0</TargetFramework>
 	  <ProcessorArchitecture>amd64</ProcessorArchitecture>
 	  <LangVersion>Latest</LangVersion>
-	  <Version>1.0.0</Version>
+	  <Version>1.0.1</Version>
 	  <Authors>Frends</Authors>
 	  <Copyright>Frends</Copyright>
 	  <Company>Frends</Company>
