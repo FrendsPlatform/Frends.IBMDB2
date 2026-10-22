@@ -1,4 +1,4 @@
-namespace Frends.IBMDB2.ExecuteQuery.Tests
+﻿namespace Frends.IBMDB2.ExecuteQuery.Tests
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 Parameters = TestParameters().ToArray(),
             };
 
-            Assert.ThrowsAsync<Exception>(
+            Assert.ThrowsAsync<NotSupportedException>(
                 async () => await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None));
         }
 
@@ -65,7 +65,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
             var insert = await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None);
             ClassicAssert.IsTrue(insert.Success);
             ClassicAssert.AreEqual(1, insert.RecordsAffected);
-            ClassicAssert.IsNull(insert.ErrorMessage);
+            ClassicAssert.IsNull(insert.Error);
             ClassicAssert.AreEqual(1, (int)insert.Data["AffectedRows"]);
             ClassicAssert.AreEqual(1, await GetRowCount()); // Make sure rows inserted before moving on.
         }
@@ -89,7 +89,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
             var insert = await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None);
             ClassicAssert.IsTrue(insert.Success);
             ClassicAssert.AreEqual(1, insert.RecordsAffected);
-            ClassicAssert.IsNull(insert.ErrorMessage);
+            ClassicAssert.IsNull(insert.Error);
             ClassicAssert.AreEqual(1, (int)insert.Data["AffectedRows"]);
             ClassicAssert.AreEqual(1, await GetRowCount()); // Make sure rows inserted before moving on.
         }
@@ -157,7 +157,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 var insert = await IBMDB2.ExecuteQuery(inputInsert, options, default);
                 ClassicAssert.IsTrue(insert.Success);
                 ClassicAssert.AreEqual(3, insert.RecordsAffected);
-                ClassicAssert.IsNull(insert.ErrorMessage);
+                ClassicAssert.IsNull(insert.Error);
                 ClassicAssert.AreEqual(3, (int)insert.Data["AffectedRows"]);
                 ClassicAssert.AreEqual(3, await GetRowCount()); // Make sure rows inserted before moving on.
 
@@ -165,7 +165,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 var select = await IBMDB2.ExecuteQuery(inputSelect, options, default);
                 ClassicAssert.IsTrue(select.Success);
                 ClassicAssert.AreEqual(-1, select.RecordsAffected);
-                ClassicAssert.IsNull(select.ErrorMessage);
+                ClassicAssert.IsNull(select.Error);
                 ClassicAssert.AreEqual(typeof(JArray), select.Data.GetType());
                 ClassicAssert.AreEqual("Suku", (string)select.Data[0]["LASTNAME"]);
                 ClassicAssert.AreEqual("Etu", (string)select.Data[0]["FIRSTNAME"]);
@@ -179,7 +179,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 var selectSingle = await IBMDB2.ExecuteQuery(inputSelectSingle, options, default);
                 ClassicAssert.IsTrue(selectSingle.Success);
                 ClassicAssert.AreEqual(-1, selectSingle.RecordsAffected);
-                ClassicAssert.IsNull(selectSingle.ErrorMessage);
+                ClassicAssert.IsNull(selectSingle.Error);
                 ClassicAssert.AreEqual(typeof(JArray), selectSingle.Data.GetType());
                 ClassicAssert.AreEqual("Suku", (string)selectSingle.Data[0]["LASTNAME"]);
                 ClassicAssert.AreEqual("Etu", (string)selectSingle.Data[0]["FIRSTNAME"]);
@@ -189,7 +189,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 var update = await IBMDB2.ExecuteQuery(inputUpdate, options, default);
                 ClassicAssert.IsTrue(update.Success);
                 ClassicAssert.AreEqual(1, update.RecordsAffected);
-                ClassicAssert.IsNull(update.ErrorMessage);
+                ClassicAssert.IsNull(update.Error);
                 ClassicAssert.AreEqual(3, await GetRowCount()); // double check
                 var checkUpdateResult = await IBMDB2.ExecuteQuery(inputSelect, options, default);
                 ClassicAssert.AreEqual("Suku", (string)checkUpdateResult.Data[0]["LASTNAME"]);
@@ -204,7 +204,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 var delete = await IBMDB2.ExecuteQuery(inputDelete, options, default);
                 ClassicAssert.IsTrue(delete.Success);
                 ClassicAssert.AreEqual(1, delete.RecordsAffected);
-                ClassicAssert.IsNull(delete.ErrorMessage);
+                ClassicAssert.IsNull(delete.Error);
                 ClassicAssert.AreEqual(2, await GetRowCount()); // double check
                 var checkDeleteResult = await IBMDB2.ExecuteQuery(inputSelect, options, default);
                 ClassicAssert.AreEqual("Suku", (string)checkDeleteResult.Data[0]["LASTNAME"]);
