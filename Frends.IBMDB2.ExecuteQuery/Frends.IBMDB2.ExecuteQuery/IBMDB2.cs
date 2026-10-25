@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Frends.IBMDB2.ExecuteQuery.Definitions;
+    using Frends.IBMDB2.ExecuteQuery.Helpers;
     using IBM.Data.Db2;
     using Newtonsoft.Json.Linq;
 
@@ -21,7 +22,7 @@
         /// <param name="input">Input parameters.</param>
         /// <param name="options">Options parameters.</param>
         /// <param name="cancellationToken">Cancellation token given by Frends.</param>
-        /// <returns>Object { bool Success, int RecordsAffected, string ErrorMessage, dynamic data }.</returns>
+        /// <returns>Object { bool Success, int RecordsAffected, object Error { string Message, Exception AdditionalInfo }, dynamic Data }.</returns>
         public static async Task<Result> ExecuteQuery(
             [PropertyTab] Input input,
             [PropertyTab] Options options,
@@ -54,7 +55,9 @@
             }
 
             if (options.SqlTransactionIsolationLevel is TransactionIsolationLevel.None)
+            {
                 result = await ExecuteHandler(input, options, command, cancellationToken);
+            }
             else
             {
                 using var transaction = connection.BeginTransaction(GetIsolationLevel(options));
@@ -146,14 +149,7 @@
                 if (dataReader != null && !dataReader.IsClosed)
                     await dataReader.CloseAsync();
 
-                if (command.Transaction is null)
-                {
-                    return HandleError(
-                        ex,
-                        "ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.",
-                        options.ThrowErrorOnFailure);
-                }
-                else
+                if (command.Transaction is not null)
                 {
                     try
                     {
@@ -161,17 +157,11 @@
                     }
                     catch (Exception rollbackEx)
                     {
-                        return HandleError(
-                            rollbackEx,
-                            $"ExecuteHandler exception: An exception occurred on transaction rollback. Exception leading to rollback: {ex}.",
-                            options.ThrowErrorOnFailure);
+                        return rollbackEx.Handle(options);
                     }
-
-                    return HandleError(
-                        ex,
-                        "ExecuteHandler exception: (If required) transaction rollback completed without exception.",
-                        options.ThrowErrorOnFailure);
                 }
+
+                return ex.Handle(options);
             }
         }
 
@@ -187,14 +177,6 @@
                 TransactionIsolationLevel.Snapshot => IsolationLevel.Snapshot,
                 _ => IsolationLevel.ReadCommitted,
             };
-        }
-
-        private static Result HandleError(Exception ex, string message, bool throwErrorOnFailure)
-        {
-            if (throwErrorOnFailure)
-                throw new Exception(message, ex);
-            else
-                return new Result { Success = false, ErrorMessage = $"{message} Exception: {ex.Message}." };
         }
     }
 }

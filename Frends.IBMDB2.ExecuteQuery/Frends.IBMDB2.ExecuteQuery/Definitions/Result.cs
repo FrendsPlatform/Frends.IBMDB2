@@ -19,11 +19,11 @@ public class Result
     public int RecordsAffected { get; init; } = 0;
 
     /// <summary>
-    /// Error message.
+    /// Error that occurred during task execution.
     /// This value is generated when an exception occurs and Options.ThrowErrorOnFailure = false.
     /// </summary>
-    /// <example>Login failed for user 'user'.</example>
-    public string ErrorMessage { get; init; } = null;
+    /// <example>object { string Message, Exception AdditionalInfo }</example>
+    public Error Error { get; init; } = null;
 
     /// <summary>
     /// Query result as JToken.
