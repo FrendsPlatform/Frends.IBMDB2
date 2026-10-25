@@ -29,7 +29,7 @@ namespace Frends.IBMDB2.ExecuteQuery.Tests
                 Parameters = TestParameters().ToArray(),
             };
 
-            Assert.ThrowsAsync<Exception>(
+            Assert.ThrowsAsync<NotSupportedException>(
                 async () => await IBMDB2.ExecuteQuery(inputInsert, options, CancellationToken.None));
         }
 
