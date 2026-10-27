@@ -1,4 +1,4 @@
-﻿namespace Frends.IBMDB2.ExecuteQuery.Definitions;
+namespace Frends.IBMDB2.ExecuteQuery.Definitions;
 
 /// <summary>
 /// Specifies how a command string is interpreted.

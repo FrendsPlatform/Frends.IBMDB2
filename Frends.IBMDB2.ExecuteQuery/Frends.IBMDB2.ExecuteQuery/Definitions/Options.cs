@@ -9,14 +9,6 @@ using System.ComponentModel.DataAnnotations;
 public class Options
 {
     /// <summary>
-    /// If enabled Task will throw exception when operation fails.
-    /// Otherwise the Task will return Result object containing Result.Success = false and Result.Error with the exception details.
-    /// </summary>
-    /// <example>true</example>
-    [DefaultValue(true)]
-    public bool ThrowErrorOnFailure { get; set; } = true;
-
-    /// <summary>
     /// Number of seconds for the operation to complete before it times out.
     /// </summary>
     /// <example>60</example>
@@ -38,6 +30,14 @@ public class Options
     /// <example>SqlTransactionIsolationLevel.ReadCommitted</example>
     [DefaultValue(TransactionIsolationLevel.ReadCommitted)]
     public TransactionIsolationLevel SqlTransactionIsolationLevel { get; set; }
+
+    /// <summary>
+    /// If enabled Task will throw exception when operation fails.
+    /// Otherwise the Task will return Result object containing Result.Success = false and Result.Error with the exception details.
+    /// </summary>
+    /// <example>true</example>
+    [DefaultValue(true)]
+    public bool ThrowErrorOnFailure { get; set; } = true;
 
     /// <summary>
     /// Overrides the error message on failure.

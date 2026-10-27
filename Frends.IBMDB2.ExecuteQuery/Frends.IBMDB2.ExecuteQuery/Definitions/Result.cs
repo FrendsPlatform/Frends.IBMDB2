@@ -19,13 +19,6 @@ public class Result
     public int RecordsAffected { get; init; } = 0;
 
     /// <summary>
-    /// Error that occurred during task execution.
-    /// This value is generated when an exception occurs and Options.ThrowErrorOnFailure = false.
-    /// </summary>
-    /// <example>object { string Message, Exception AdditionalInfo }</example>
-    public Error Error { get; init; } = null;
-
-    /// <summary>
     /// Query result as JToken.
     /// </summary>
     /// <example>
@@ -34,4 +27,11 @@ public class Result
     /// Input.ExecuteType = Scalar: {{  "Value": 1 }}
     /// </example>
     public dynamic Data { get; init; } = null;
+
+    /// <summary>
+    /// Error that occurred during task execution.
+    /// This value is generated when an exception occurs and Options.ThrowErrorOnFailure = false.
+    /// </summary>
+    /// <example>object { string Message, Exception AdditionalInfo }</example>
+    public Error Error { get; init; } = null;
 }

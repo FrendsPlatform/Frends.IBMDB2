@@ -28,49 +28,47 @@
             [PropertyTab] Options options,
             CancellationToken cancellationToken)
         {
-            Result result;
-
-            using var connection = new DB2Connection(input.ConnectionString);
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = input.Query;
-
-            if (input.Parameters != null)
+            try
             {
-                foreach (var parameter in input.Parameters)
+                using var connection = new DB2Connection(input.ConnectionString);
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = input.Query;
+
+                if (input.Parameters != null)
                 {
-                    if (parameter.DataType is DataTypes.Auto)
+                    foreach (var parameter in input.Parameters)
                     {
-                        command.Parameters.Add(
-                            parameterName: parameter.Name,
-                            value: parameter.Value);
-                    }
-                    else
-                    {
-                        var dbType = (DB2Type)Enum.Parse(typeof(DB2Type), parameter.DataType.ToString());
-                        var commandParameter = command.Parameters.Add(parameter.Name, dbType);
-                        commandParameter.Value = parameter.Value;
+                        if (parameter.DataType is DataTypes.Auto)
+                        {
+                            command.Parameters.Add(
+                                parameterName: parameter.Name,
+                                value: parameter.Value);
+                        }
+                        else
+                        {
+                            var dbType = (DB2Type)Enum.Parse(typeof(DB2Type), parameter.DataType.ToString());
+                            var commandParameter = command.Parameters.Add(parameter.Name, dbType);
+                            commandParameter.Value = parameter.Value;
+                        }
                     }
                 }
-            }
 
-            if (options.SqlTransactionIsolationLevel is TransactionIsolationLevel.None)
-            {
-                result = await ExecuteHandler(input, options, command, cancellationToken);
-            }
-            else
-            {
+                if (options.SqlTransactionIsolationLevel is TransactionIsolationLevel.None)
+                    return await ExecuteHandler(input, command, cancellationToken);
+
                 using var transaction = connection.BeginTransaction(GetIsolationLevel(options));
                 command.Transaction = transaction;
-                result = await ExecuteHandler(input, options, command, cancellationToken);
+                return await ExecuteHandler(input, command, cancellationToken);
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                return ex.Handle(options);
+            }
         }
 
         private static async Task<Result> ExecuteHandler(
             Input input,
-            Options options,
             DB2Command command,
             CancellationToken cancellationToken)
         {
@@ -144,24 +142,17 @@
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (dataReader != null && !dataReader.IsClosed)
                     await dataReader.CloseAsync();
 
                 if (command.Transaction is not null)
                 {
-                    try
-                    {
-                        await command.Transaction.RollbackAsync(cancellationToken);
-                    }
-                    catch (Exception rollbackEx)
-                    {
-                        return rollbackEx.Handle(options);
-                    }
+                    await command.Transaction.RollbackAsync(cancellationToken);
                 }
 
-                return ex.Handle(options);
+                throw;
             }
         }
 

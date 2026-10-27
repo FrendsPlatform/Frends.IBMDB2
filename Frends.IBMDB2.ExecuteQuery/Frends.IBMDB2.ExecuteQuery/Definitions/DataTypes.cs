@@ -1,4 +1,4 @@
-﻿namespace Frends.IBMDB2.ExecuteQuery.Definitions;
+namespace Frends.IBMDB2.ExecuteQuery.Definitions;
 
 /// <summary>
 /// IBM DB2-specific data type.

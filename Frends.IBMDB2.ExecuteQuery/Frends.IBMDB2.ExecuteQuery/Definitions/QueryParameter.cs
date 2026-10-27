@@ -1,4 +1,4 @@
-﻿namespace Frends.IBMDB2.ExecuteQuery.Definitions;
+namespace Frends.IBMDB2.ExecuteQuery.Definitions;
 
 /// <summary>
 /// Query parameters for the query.
