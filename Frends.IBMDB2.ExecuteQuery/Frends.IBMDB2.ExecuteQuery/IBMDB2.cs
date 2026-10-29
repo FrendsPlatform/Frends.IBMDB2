@@ -6,6 +6,7 @@
     using System.Threading;
     using System.Threading.Tasks;
     using Frends.IBMDB2.ExecuteQuery.Definitions;
+    using Frends.IBMDB2.ExecuteQuery.Helpers;
     using IBM.Data.Db2;
     using Newtonsoft.Json.Linq;
 
@@ -21,53 +22,53 @@
         /// <param name="input">Input parameters.</param>
         /// <param name="options">Options parameters.</param>
         /// <param name="cancellationToken">Cancellation token given by Frends.</param>
-        /// <returns>Object { bool Success, int RecordsAffected, string ErrorMessage, dynamic data }.</returns>
+        /// <returns>Object { bool Success, int RecordsAffected, object Error { string Message, Exception AdditionalInfo }, dynamic Data }.</returns>
         public static async Task<Result> ExecuteQuery(
             [PropertyTab] Input input,
             [PropertyTab] Options options,
             CancellationToken cancellationToken)
         {
-            Result result;
-
-            using var connection = new DB2Connection(input.ConnectionString);
-            connection.Open();
-            var command = connection.CreateCommand();
-            command.CommandText = input.Query;
-
-            if (input.Parameters != null)
+            try
             {
-                foreach (var parameter in input.Parameters)
+                using var connection = new DB2Connection(input.ConnectionString);
+                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = input.Query;
+
+                if (input.Parameters != null)
                 {
-                    if (parameter.DataType is DataTypes.Auto)
+                    foreach (var parameter in input.Parameters)
                     {
-                        command.Parameters.Add(
-                            parameterName: parameter.Name,
-                            value: parameter.Value);
-                    }
-                    else
-                    {
-                        var dbType = (DB2Type)Enum.Parse(typeof(DB2Type), parameter.DataType.ToString());
-                        var commandParameter = command.Parameters.Add(parameter.Name, dbType);
-                        commandParameter.Value = parameter.Value;
+                        if (parameter.DataType is DataTypes.Auto)
+                        {
+                            command.Parameters.Add(
+                                parameterName: parameter.Name,
+                                value: parameter.Value);
+                        }
+                        else
+                        {
+                            var dbType = (DB2Type)Enum.Parse(typeof(DB2Type), parameter.DataType.ToString());
+                            var commandParameter = command.Parameters.Add(parameter.Name, dbType);
+                            commandParameter.Value = parameter.Value;
+                        }
                     }
                 }
-            }
 
-            if (options.SqlTransactionIsolationLevel is TransactionIsolationLevel.None)
-                result = await ExecuteHandler(input, options, command, cancellationToken);
-            else
-            {
+                if (options.SqlTransactionIsolationLevel is TransactionIsolationLevel.None)
+                    return await ExecuteHandler(input, command, cancellationToken);
+
                 using var transaction = connection.BeginTransaction(GetIsolationLevel(options));
                 command.Transaction = transaction;
-                result = await ExecuteHandler(input, options, command, cancellationToken);
+                return await ExecuteHandler(input, command, cancellationToken);
             }
-
-            return result;
+            catch (Exception ex)
+            {
+                return ex.Handle(options);
+            }
         }
 
         private static async Task<Result> ExecuteHandler(
             Input input,
-            Options options,
             DB2Command command,
             CancellationToken cancellationToken)
         {
@@ -141,37 +142,17 @@
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (dataReader != null && !dataReader.IsClosed)
                     await dataReader.CloseAsync();
 
-                if (command.Transaction is null)
+                if (command.Transaction is not null)
                 {
-                    return HandleError(
-                        ex,
-                        "ExecuteHandler exception: 'Options.TransactionIsolationLevel = None', so there was no transaction rollback.",
-                        options.ThrowErrorOnFailure);
+                    await command.Transaction.RollbackAsync(cancellationToken);
                 }
-                else
-                {
-                    try
-                    {
-                        await command.Transaction.RollbackAsync(cancellationToken);
-                    }
-                    catch (Exception rollbackEx)
-                    {
-                        return HandleError(
-                            rollbackEx,
-                            $"ExecuteHandler exception: An exception occurred on transaction rollback. Exception leading to rollback: {ex}.",
-                            options.ThrowErrorOnFailure);
-                    }
 
-                    return HandleError(
-                        ex,
-                        "ExecuteHandler exception: (If required) transaction rollback completed without exception.",
-                        options.ThrowErrorOnFailure);
-                }
+                throw;
             }
         }
 
@@ -187,14 +168,6 @@
                 TransactionIsolationLevel.Snapshot => IsolationLevel.Snapshot,
                 _ => IsolationLevel.ReadCommitted,
             };
-        }
-
-        private static Result HandleError(Exception ex, string message, bool throwErrorOnFailure)
-        {
-            if (throwErrorOnFailure)
-                throw new Exception(message, ex);
-            else
-                return new Result { Success = false, ErrorMessage = $"{message} Exception: {ex.Message}." };
         }
     }
 }

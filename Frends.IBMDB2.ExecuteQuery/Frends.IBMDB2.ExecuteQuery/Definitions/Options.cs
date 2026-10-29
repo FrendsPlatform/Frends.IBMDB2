@@ -1,20 +1,13 @@
 ﻿namespace Frends.IBMDB2.ExecuteQuery.Definitions;
 
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 /// <summary>
 /// Options class.
 /// </summary>
 public class Options
 {
-    /// <summary>
-    /// If enabled Task will throw exception when operation fails.
-    /// Otherwise the Task will return Result object containing Result.Success = false and Result.ErrorMessage = 'exception message'
-    /// </summary>
-    /// <example>true</example>
-    [DefaultValue(true)]
-    public bool ThrowErrorOnFailure { get; set; }
-
     /// <summary>
     /// Number of seconds for the operation to complete before it times out.
     /// </summary>
@@ -37,4 +30,20 @@ public class Options
     /// <example>SqlTransactionIsolationLevel.ReadCommitted</example>
     [DefaultValue(TransactionIsolationLevel.ReadCommitted)]
     public TransactionIsolationLevel SqlTransactionIsolationLevel { get; set; }
+
+    /// <summary>
+    /// If enabled Task will throw exception when operation fails.
+    /// Otherwise the Task will return Result object containing Result.Success = false and Result.Error with the exception details.
+    /// </summary>
+    /// <example>true</example>
+    [DefaultValue(true)]
+    public bool ThrowErrorOnFailure { get; set; } = true;
+
+    /// <summary>
+    /// Overrides the error message on failure.
+    /// </summary>
+    /// <example>Custom error message</example>
+    [DisplayFormat(DataFormatString = "Text")]
+    [DefaultValue("")]
+    public string ErrorMessageOnFailure { get; set; } = string.Empty;
 }
